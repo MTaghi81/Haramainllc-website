@@ -207,6 +207,7 @@
       text-align: center;
       box-shadow: 0 8px 25px rgba(0,0,0,.05);
       transition: .25s;
+      overflow: hidden;
     }
 
     .service:hover {
@@ -217,6 +218,38 @@
     .icon {
       font-size: 42px;
       margin-bottom: 12px;
+    }
+
+    /* صورة الطائرة والقطار */
+    .travel-image {
+      width: 100%;
+      height: 145px;
+      border-radius: 15px;
+      margin-bottom: 18px;
+      background:
+        linear-gradient(135deg, #edf4f0, #f8f5ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      overflow: hidden;
+      border: 1px solid #e5e9e5;
+    }
+
+    .travel-item {
+      text-align: center;
+      color: var(--green);
+    }
+
+    .travel-item .travel-icon {
+      font-size: 55px;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .travel-item span {
+      font-size: 12px;
+      font-weight: bold;
     }
 
     .service h3 {
@@ -349,6 +382,7 @@
     }
 
     @media (max-width: 760px) {
+
       header {
         flex-direction: column;
         padding: 13px 4%;
@@ -381,6 +415,10 @@
         left: 16px;
         bottom: 16px;
       }
+
+      .travel-image {
+        height: 130px;
+      }
     }
   </style>
 </head>
@@ -388,20 +426,30 @@
 <body>
 
 <header>
+
   <a class="logo" href="#home">
-    <span id="logoArabic">الحرمين</span>
+    <span>الحرمين</span>
     <small>HARAMAIN LLC</small>
   </a>
 
   <nav>
+
     <a href="#home" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+
     <a href="#services" data-ar="خدماتنا" data-en="Services">خدماتنا</a>
+
     <a href="#how" data-ar="كيف نعمل" data-en="How It Works">كيف نعمل</a>
+
     <a href="#about" data-ar="من نحن" data-en="About Us">من نحن</a>
+
     <a href="#contact" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</a>
+
     <button class="language" onclick="toggleLanguage()">English</button>
+
   </nav>
+
 </header>
+
 
 <main>
 
@@ -413,7 +461,9 @@
       خدمات مجتمعية وإلكترونية
     </div>
 
-    <h1 id="heroTitle">الحرمين</h1>
+    <h1 id="heroTitle">
+      الحرمين
+    </h1>
 
     <h2 id="heroSubtitle">
       للخدمات المجتمعية والإلكترونية
@@ -429,9 +479,9 @@
 
       <a class="btn primary"
          id="whatsappHero"
-         href="https://wa.me/22220000288?text=السلام%20عليكم،%20أريد%20الاستفسار%20عن%20إحدى%20خدمات%20الحرمين."
+         href="#"
          target="_blank">
-        💬 تواصل معنا عبر واتساب
+        💬 <span id="whatsappHeroText">تواصل معنا عبر واتساب</span>
       </a>
 
       <a class="btn secondary"
@@ -446,210 +496,325 @@
 
 </section>
 
+
 <section id="services">
 
   <div class="section-title">
-    <h2 id="servicesTitle">خدماتنا</h2>
+
+    <h2 id="servicesTitle">
+      خدماتنا
+    </h2>
+
     <p id="servicesIntro">
       مجموعة من الخدمات التي نوفرها لتسهيل احتياجاتك
     </p>
+
   </div>
+
 
   <div class="services">
 
+
     <div class="service">
+
       <div class="icon">🧾</div>
+
       <h3 data-ar="سداد الفواتير والرسوم"
           data-en="Bills & Electronic Fees">
         سداد الفواتير والرسوم
       </h3>
+
       <p data-ar="المساعدة في سداد مجموعة من الفواتير والرسوم والخدمات الإلكترونية."
          data-en="Assistance with selected bills, fees and electronic services.">
         المساعدة في سداد مجموعة من الفواتير والرسوم والخدمات الإلكترونية.
       </p>
+
     </div>
 
+
     <div class="service">
+
       <div class="icon">🚗</div>
+
       <h3 data-ar="المخالفات المرورية"
           data-en="Traffic Fines">
         المخالفات المرورية
       </h3>
+
       <p data-ar="المساعدة في خدمات سداد المخالفات والرسوم المتاحة."
          data-en="Assistance with available traffic fine payment services.">
         المساعدة في خدمات سداد المخالفات والرسوم المتاحة.
       </p>
+
     </div>
 
+
     <div class="service">
+
       <div class="icon">⚡</div>
+
       <h3 data-ar="الكهرباء والاتصالات"
           data-en="Electricity & Telecom">
         الكهرباء والاتصالات
       </h3>
+
       <p data-ar="المساعدة في سداد فواتير الكهرباء وخدمات الاتصالات."
          data-en="Assistance with electricity and telecommunications bills.">
         المساعدة في سداد فواتير الكهرباء وخدمات الاتصالات.
       </p>
+
     </div>
 
+
     <div class="service">
+
       <div class="icon">🏠</div>
+
       <h3 data-ar="مستحقات الإيجار"
           data-en="Rental Payments">
         مستحقات الإيجار
       </h3>
+
       <p data-ar="المساعدة في سداد مستحقات إيجار الشقق أو السيارات."
          data-en="Assistance with selected rental payments for apartments or vehicles.">
         المساعدة في سداد مستحقات إيجار الشقق أو السيارات.
       </p>
+
     </div>
 
+
+    <!-- حجز التذاكر -->
     <div class="service">
-      <div class="icon">🎫</div>
+
+      <div class="travel-image">
+
+        <div class="travel-item">
+          <span class="travel-icon">✈️</span>
+          <span data-ar="طيران" data-en="Flights">طيران</span>
+        </div>
+
+        <div class="travel-item">
+          <span class="travel-icon">🚆</span>
+          <span data-ar="قطارات" data-en="Trains">قطارات</span>
+        </div>
+
+      </div>
+
       <h3 data-ar="حجز التذاكر"
           data-en="Ticket Booking">
         حجز التذاكر
       </h3>
-      <p data-ar="المساعدة في حجز تذاكر السفر بأسعار تنافسية."
-         data-en="Assistance with travel ticket booking at competitive prices.">
-        المساعدة في حجز تذاكر السفر بأسعار تنافسية.
+
+      <p data-ar="المساعدة في حجز تذاكر الطيران والقطارات بأسعار تنافسية."
+         data-en="Assistance with flight and train ticket booking at competitive prices.">
+        المساعدة في حجز تذاكر الطيران والقطارات بأسعار تنافسية.
       </p>
+
     </div>
 
+
     <div class="service">
+
       <div class="icon">🕌</div>
+
       <h3 data-ar="حجز الروضة الشريفة"
           data-en="Rawdah Booking Assistance">
         حجز الروضة الشريفة
       </h3>
+
       <p data-ar="مساعدة العملاء في إجراءات الحجز وفق الخدمات والأنظمة المتاحة."
          data-en="Assistance with Rawdah booking procedures subject to available services and rules.">
         مساعدة العملاء في إجراءات الحجز وفق الخدمات والأنظمة المتاحة.
       </p>
+
     </div>
 
+
     <div class="service">
+
       <div class="icon">🚐</div>
+
       <h3 data-ar="خدمات المزارات"
           data-en="Ziyarat Transportation">
         خدمات المزارات
       </h3>
+
       <p data-ar="تنسيق خدمات النقل مع سائقين محترفين بكل راحة وأريحية."
          data-en="Transportation coordination with professional drivers for comfortable visits.">
         تنسيق خدمات النقل مع سائقين محترفين بكل راحة وأريحية.
       </p>
+
     </div>
 
+
     <div class="service">
+
       <div class="icon">🌍</div>
+
       <h3 data-ar="خدمات إلكترونية أخرى"
           data-en="Other Electronic Services">
         خدمات إلكترونية أخرى
       </h3>
+
       <p data-ar="تواصل معنا لمعرفة الخدمات الإلكترونية المتاحة."
          data-en="Contact us to learn about additional electronic services.">
         تواصل معنا لمعرفة الخدمات الإلكترونية المتاحة.
       </p>
+
     </div>
 
   </div>
 
 </section>
+
 
 <section class="steps-section" id="how">
 
   <div class="section-title">
-    <h2 id="howTitle">كيف نعمل؟</h2>
-    <p id="howIntro">ثلاث خطوات بسيطة للحصول على الخدمة</p>
+
+    <h2 id="howTitle">
+      كيف نعمل؟
+    </h2>
+
+    <p id="howIntro">
+      ثلاث خطوات بسيطة للحصول على الخدمة
+    </p>
+
   </div>
+
 
   <div class="steps">
 
     <div class="step">
+
       <div class="step-number">1</div>
-      <h3 data-ar="تواصل معنا" data-en="Contact Us">
+
+      <h3 data-ar="تواصل معنا"
+          data-en="Contact Us">
         تواصل معنا
       </h3>
+
       <p data-ar="راسلنا عبر واتساب وحدد الخدمة التي تحتاجها."
          data-en="Message us on WhatsApp and tell us which service you need.">
         راسلنا عبر واتساب وحدد الخدمة التي تحتاجها.
       </p>
+
     </div>
 
+
     <div class="step">
+
       <div class="step-number">2</div>
-      <h3 data-ar="تأكيد التفاصيل" data-en="Confirm Details">
+
+      <h3 data-ar="تأكيد التفاصيل"
+          data-en="Confirm Details">
         تأكيد التفاصيل
       </h3>
+
       <p data-ar="نراجع معك تفاصيل الخدمة والتكلفة المطلوبة."
          data-en="We review the service details and applicable cost with you.">
         نراجع معك تفاصيل الخدمة والتكلفة المطلوبة.
       </p>
+
     </div>
 
+
     <div class="step">
+
       <div class="step-number">3</div>
-      <h3 data-ar="إتمام الخدمة" data-en="Complete the Service">
+
+      <h3 data-ar="إتمام الخدمة"
+          data-en="Complete the Service">
         إتمام الخدمة
       </h3>
+
       <p data-ar="نتابع تنفيذ الخدمة وإبلاغك بالنتيجة."
          data-en="We proceed with the service and keep you informed.">
         نتابع تنفيذ الخدمة وإبلاغك بالنتيجة.
       </p>
+
     </div>
 
   </div>
 
 </section>
+
 
 <section class="payment">
 
   <div class="section-title">
-    <h2 id="paymentTitle">طرق الدفع</h2>
-    <p id="paymentIntro">خيارات دفع ميسّرة حسب الخدمة المتاحة</p>
+
+    <h2 id="paymentTitle">
+      طرق الدفع
+    </h2>
+
+    <p id="paymentIntro">
+      خيارات دفع ميسّرة حسب الخدمة المتاحة
+    </p>
+
   </div>
+
 
   <div class="payment-box">
 
     <div class="payment-card">
+
       <div style="font-size:38px;">💵</div>
-      <strong data-ar="الدفع النقدي" data-en="Cash Payment">
+
+      <strong data-ar="الدفع النقدي"
+              data-en="Cash Payment">
         الدفع النقدي
       </strong>
+
     </div>
 
+
     <div class="payment-card">
+
       <div style="font-size:38px;">🏦</div>
-      <strong data-ar="خدمة بنكيلي" data-en="Bankily">
+
+      <strong data-ar="خدمة بنكيلي"
+              data-en="Bankily">
         خدمة بنكيلي
       </strong>
+
     </div>
 
   </div>
 
 </section>
 
+
 <section id="about">
 
   <div class="section-title">
-    <h2 id="aboutTitle">من نحن</h2>
+
+    <h2 id="aboutTitle">
+      من نحن
+    </h2>
+
   </div>
 
+
   <div class="about">
+
     <p id="aboutText">
       الحرمين للخدمات المجتمعية والإلكترونية هي جهة تقدم
       مجموعة من الخدمات الإلكترونية والمجتمعية بهدف تسهيل
       إنجاز احتياجات العملاء وتوفير تجربة ميسّرة وخدمة سريعة
       وبأسعار تنافسية.
     </p>
+
   </div>
 
 </section>
 
+
 <section class="contact" id="contact">
 
-  <h2 id="contactTitle">هل تحتاج إلى إحدى خدماتنا؟</h2>
+  <h2 id="contactTitle">
+    هل تحتاج إلى إحدى خدماتنا؟
+  </h2>
 
   <p id="contactText">
     تواصل معنا مباشرة عبر واتساب وسنساعدك في معرفة
@@ -662,135 +827,308 @@
 
   <a class="btn primary"
      id="whatsappContact"
-     href="https://wa.me/22220000288?text=السلام%20عليكم،%20أريد%20الاستفسار%20عن%20إحدى%20خدمات%20الحرمين."
+     href="#"
      target="_blank">
-    💬 تواصل معنا عبر واتساب
+
+    💬 <span id="whatsappContactText">
+      تواصل معنا عبر واتساب
+    </span>
+
   </a>
 
 </section>
 
 </main>
 
+
 <footer>
-  <span id="footerText">© 2026 Haramain LLC — جميع الحقوق محفوظة</span>
+
+  <span id="footerText">
+    © 2026 Haramain LLC — جميع الحقوق محفوظة
+  </span>
+
 </footer>
+
 
 <a class="whatsapp"
    id="whatsappFloat"
-   href="https://wa.me/22220000288?text=السلام%20عليكم،%20أريد%20الاستفسار%20عن%20إحدى%20خدمات%20الحرمين."
+   href="#"
    target="_blank"
    aria-label="WhatsApp">
   💬
 </a>
 
+
 <script>
 
 let currentLanguage = "ar";
 
+
 const translations = {
 
   ar: {
+
     title: "الحرمين | للخدمات المجتمعية والإلكترونية",
-    description: "الحرمين للخدمات المجتمعية والإلكترونية - خدمات ميسرة وبأسعار تنافسية.",
-    badge: "خدمات مجتمعية وإلكترونية",
-    heroTitle: "الحرمين",
-    heroSubtitle: "للخدمات المجتمعية والإلكترونية",
-    heroText: "خدمات إلكترونية ومجتمعية ميسّرة، نساعدك على إنجاز احتياجاتك بكل سهولة وبأسعار تنافسية.",
-    servicesTitle: "خدماتنا",
-    servicesIntro: "مجموعة من الخدمات التي نوفرها لتسهيل احتياجاتك",
-    howTitle: "كيف نعمل؟",
-    howIntro: "ثلاث خطوات بسيطة للحصول على الخدمة",
-    paymentTitle: "طرق الدفع",
-    paymentIntro: "خيارات دفع ميسّرة حسب الخدمة المتاحة",
-    aboutTitle: "من نحن",
-    aboutText: "الحرمين للخدمات المجتمعية والإلكترونية هي جهة تقدم مجموعة من الخدمات الإلكترونية والمجتمعية بهدف تسهيل إنجاز احتياجات العملاء وتوفير تجربة ميسّرة وخدمة سريعة وبأسعار تنافسية.",
-    contactTitle: "هل تحتاج إلى إحدى خدماتنا؟",
-    contactText: "تواصل معنا مباشرة عبر واتساب وسنساعدك في معرفة الخدمة المناسبة لك.",
-    servicesButton: "استعرض خدماتنا",
-    languageButton: "English",
-    footer: "© 2026 Haramain LLC — جميع الحقوق محفوظة",
-    whatsappMessage: "السلام عليكم، أريد الاستفسار عن إحدى خدمات الحرمين."
+
+    description:
+      "الحرمين للخدمات المجتمعية والإلكترونية - خدمات ميسرة وبأسعار تنافسية.",
+
+    badge:
+      "خدمات مجتمعية وإلكترونية",
+
+    heroTitle:
+      "الحرمين",
+
+    heroSubtitle:
+      "للخدمات المجتمعية والإلكترونية",
+
+    heroText:
+      "خدمات إلكترونية ومجتمعية ميسّرة، نساعدك على إنجاز احتياجاتك بكل سهولة وبأسعار تنافسية.",
+
+    servicesTitle:
+      "خدماتنا",
+
+    servicesIntro:
+      "مجموعة من الخدمات التي نوفرها لتسهيل احتياجاتك",
+
+    howTitle:
+      "كيف نعمل؟",
+
+    howIntro:
+      "ثلاث خطوات بسيطة للحصول على الخدمة",
+
+    paymentTitle:
+      "طرق الدفع",
+
+    paymentIntro:
+      "خيارات دفع ميسّرة حسب الخدمة المتاحة",
+
+    aboutTitle:
+      "من نحن",
+
+    aboutText:
+      "الحرمين للخدمات المجتمعية والإلكترونية هي جهة تقدم مجموعة من الخدمات الإلكترونية والمجتمعية بهدف تسهيل إنجاز احتياجات العملاء وتوفير تجربة ميسّرة وخدمة سريعة وبأسعار تنافسية.",
+
+    contactTitle:
+      "هل تحتاج إلى إحدى خدماتنا؟",
+
+    contactText:
+      "تواصل معنا مباشرة عبر واتساب وسنساعدك في معرفة الخدمة المناسبة لك.",
+
+    servicesButton:
+      "استعرض خدماتنا",
+
+    whatsappButton:
+      "تواصل معنا عبر واتساب",
+
+    languageButton:
+      "English",
+
+    footer:
+      "© 2026 Haramain LLC — جميع الحقوق محفوظة",
+
+    whatsappMessage:
+      "السلام عليكم، أريد الاستفسار عن إحدى خدمات الحرمين."
+
   },
 
+
   en: {
-    title: "Haramain LLC | Community & Electronic Services",
-    description: "Haramain LLC provides convenient community and electronic services at competitive prices.",
-    badge: "Community & Electronic Services",
-    heroTitle: "Haramain",
-    heroSubtitle: "Community & Electronic Services",
-    heroText: "Convenient community and electronic services designed to help you complete your needs with ease and competitive pricing.",
-    servicesTitle: "Our Services",
-    servicesIntro: "A selection of services designed to make your everyday needs easier.",
-    howTitle: "How It Works",
-    howIntro: "Three simple steps to request a service.",
-    paymentTitle: "Payment Methods",
-    paymentIntro: "Convenient payment options depending on the available service.",
-    aboutTitle: "About Us",
-    aboutText: "Haramain LLC provides a range of community and electronic services designed to make everyday tasks easier through convenient service and competitive pricing.",
-    contactTitle: "Need One of Our Services?",
-    contactText: "Contact us directly through WhatsApp and we will help you with your request.",
-    servicesButton: "Explore Services",
-    languageButton: "العربية",
-    footer: "© 2026 Haramain LLC — All Rights Reserved",
-    whatsappMessage: "Hello, I would like to ask about one of Haramain LLC's services."
+
+    title:
+      "Haramain LLC | Community & Electronic Services",
+
+    description:
+      "Haramain LLC provides convenient community and electronic services at competitive prices.",
+
+    badge:
+      "Community & Electronic Services",
+
+    heroTitle:
+      "Haramain",
+
+    heroSubtitle:
+      "Community & Electronic Services",
+
+    heroText:
+      "Convenient community and electronic services designed to help you complete your needs with ease and competitive pricing.",
+
+    servicesTitle:
+      "Our Services",
+
+    servicesIntro:
+      "A selection of services designed to make your everyday needs easier.",
+
+    howTitle:
+      "How It Works",
+
+    howIntro:
+      "Three simple steps to request a service.",
+
+    paymentTitle:
+      "Payment Methods",
+
+    paymentIntro:
+      "Convenient payment options depending on the available service.",
+
+    aboutTitle:
+      "About Us",
+
+    aboutText:
+      "Haramain LLC provides a range of community and electronic services designed to make everyday tasks easier through convenient service and competitive pricing.",
+
+    contactTitle:
+      "Need One of Our Services?",
+
+    contactText:
+      "Contact us directly through WhatsApp and we will help you with your request.",
+
+    servicesButton:
+      "Explore Services",
+
+    whatsappButton:
+      "Contact Us on WhatsApp",
+
+    languageButton:
+      "العربية",
+
+    footer:
+      "© 2026 Haramain LLC — All Rights Reserved",
+
+    whatsappMessage:
+      "Hello, I would like to ask about one of Haramain LLC's services."
+
   }
 
 };
 
+
+function updateWhatsApp(language) {
+
+  const message =
+    translations[language].whatsappMessage;
+
+  const url =
+    "https://wa.me/22220000288?text=" +
+    encodeURIComponent(message);
+
+  document.getElementById("whatsappHero").href = url;
+
+  document.getElementById("whatsappContact").href = url;
+
+  document.getElementById("whatsappFloat").href = url;
+}
+
+
 function toggleLanguage() {
 
-  currentLanguage = currentLanguage === "ar" ? "en" : "ar";
+  currentLanguage =
+    currentLanguage === "ar" ? "en" : "ar";
 
-  const t = translations[currentLanguage];
+  const t =
+    translations[currentLanguage];
 
-  document.documentElement.lang = currentLanguage;
-  document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
 
-  document.getElementById("pageTitle").textContent = t.title;
-  document.getElementById("pageDescription").setAttribute("content", t.description);
+  document.documentElement.lang =
+    currentLanguage;
 
-  document.getElementById("badge").textContent = t.badge;
-  document.getElementById("heroTitle").textContent = t.heroTitle;
-  document.getElementById("heroSubtitle").textContent = t.heroSubtitle;
-  document.getElementById("heroText").textContent = t.heroText;
+  document.documentElement.dir =
+    currentLanguage === "ar" ? "rtl" : "ltr";
 
-  document.getElementById("servicesTitle").textContent = t.servicesTitle;
-  document.getElementById("servicesIntro").textContent = t.servicesIntro;
 
-  document.getElementById("howTitle").textContent = t.howTitle;
-  document.getElementById("howIntro").textContent = t.howIntro;
+  document.getElementById("pageTitle").textContent =
+    t.title;
 
-  document.getElementById("paymentTitle").textContent = t.paymentTitle;
-  document.getElementById("paymentIntro").textContent = t.paymentIntro;
+  document.getElementById("pageDescription")
+    .setAttribute("content", t.description);
 
-  document.getElementById("aboutTitle").textContent = t.aboutTitle;
-  document.getElementById("aboutText").textContent = t.aboutText;
 
-  document.getElementById("contactTitle").textContent = t.contactTitle;
-  document.getElementById("contactText").textContent = t.contactText;
+  document.getElementById("badge").textContent =
+    t.badge;
 
-  document.getElementById("servicesButton").textContent = t.servicesButton;
+  document.getElementById("heroTitle").textContent =
+    t.heroTitle;
 
-  document.querySelector(".language").textContent = t.languageButton;
+  document.getElementById("heroSubtitle").textContent =
+    t.heroSubtitle;
 
-  document.getElementById("footerText").textContent = t.footer;
+  document.getElementById("heroText").textContent =
+    t.heroText;
 
-  document.querySelectorAll("[data-ar][data-en]").forEach(element => {
+
+  document.getElementById("servicesTitle").textContent =
+    t.servicesTitle;
+
+  document.getElementById("servicesIntro").textContent =
+    t.servicesIntro;
+
+
+  document.getElementById("howTitle").textContent =
+    t.howTitle;
+
+  document.getElementById("howIntro").textContent =
+    t.howIntro;
+
+
+  document.getElementById("paymentTitle").textContent =
+    t.paymentTitle;
+
+  document.getElementById("paymentIntro").textContent =
+    t.paymentIntro;
+
+
+  document.getElementById("aboutTitle").textContent =
+    t.aboutTitle;
+
+  document.getElementById("aboutText").textContent =
+    t.aboutText;
+
+
+  document.getElementById("contactTitle").textContent =
+    t.contactTitle;
+
+  document.getElementById("contactText").textContent =
+    t.contactText;
+
+
+  document.getElementById("servicesButton").textContent =
+    t.servicesButton;
+
+
+  document.getElementById("whatsappHeroText").textContent =
+    t.whatsappButton;
+
+  document.getElementById("whatsappContactText").textContent =
+    t.whatsappButton;
+
+
+  document.querySelector(".language").textContent =
+    t.languageButton;
+
+
+  document.getElementById("footerText").textContent =
+    t.footer;
+
+
+  document.querySelectorAll(
+    "[data-ar][data-en]"
+  ).forEach(element => {
+
     element.textContent =
       currentLanguage === "ar"
         ? element.getAttribute("data-ar")
         : element.getAttribute("data-en");
+
   });
 
-  const whatsappUrl =
-    "https://wa.me/22220000288?text=" +
-    encodeURIComponent(t.whatsappMessage);
 
-  document.getElementById("whatsappHero").href = whatsappUrl;
-  document.getElementById("whatsappContact").href = whatsappUrl;
-  document.getElementById("whatsappFloat").href = whatsappUrl;
+  updateWhatsApp(currentLanguage);
 
 }
+
+
+/* إعداد واتساب عند تحميل الصفحة */
+updateWhatsApp("ar");
 
 </script>
 
