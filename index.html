@@ -382,6 +382,65 @@
     }
 
 
+
+    /* آراء العملاء */
+    .customer-reviews {
+      background: white;
+    }
+
+    .reviews-grid {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .review-card {
+      background: var(--cream);
+      border: 1px solid #e4e9e5;
+      border-radius: 20px;
+      padding: 25px;
+      position: relative;
+    }
+
+    .review-card .review-stars {
+      color: var(--gold);
+      font-size: 20px;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .review-card p {
+      color: #56635b;
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .review-card .review-name {
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    .review-card .review-service {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .reviews-empty {
+      max-width: 760px;
+      margin: auto;
+      text-align: center;
+      background: var(--cream);
+      border: 1px dashed #cfd8d1;
+      border-radius: 20px;
+      padding: 30px;
+      color: var(--muted);
+    }
+
     /* تقييم الخدمات */
     .reviews-section {
       background: #f7f8f5;
@@ -533,6 +592,8 @@
     <a href="#contact" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</a>
 
     <a href="#reviews" data-ar="تقييم خدماتنا" data-en="Rate Us">تقييم خدماتنا</a>
+
+    <a href="#customerReviews" data-ar="آراء العملاء" data-en="Customer Reviews">آراء العملاء</a>
 
     <button class="language" onclick="toggleLanguage()">English</button>
 
@@ -901,6 +962,24 @@
 
 
 
+
+<section class="customer-reviews" id="customerReviews">
+
+  <div class="section-title">
+    <h2 id="customerReviewsTitle">آراء عملائنا</h2>
+    <p id="customerReviewsIntro">تجارب وآراء العملاء الذين استفادوا من خدمات الحرمين.</p>
+  </div>
+
+  <div class="reviews-grid" id="reviewsGrid"></div>
+
+  <div class="reviews-empty" id="reviewsEmpty">
+    <strong id="reviewsEmptyTitle">كن أول من يشاركنا تجربته</strong>
+    <p id="reviewsEmptyText">لم تتم إضافة تقييمات منشورة بعد. نرحب بتقييمك بعد الاستفادة من خدماتنا.</p>
+  </div>
+
+</section>
+
+
 <section class="reviews-section" id="reviews">
 
   <div class="section-title">
@@ -1071,6 +1150,11 @@ const translations = {
     whatsappMessage:
       "السلام عليكم، أريد الاستفسار عن إحدى خدمات الحرمين."
 
+    ,customerReviewsTitle: "آراء عملائنا"
+    ,customerReviewsIntro: "تجارب وآراء العملاء الذين استفادوا من خدمات الحرمين."
+    ,reviewsEmptyTitle: "كن أول من يشاركنا تجربته"
+    ,reviewsEmptyText: "لم تتم إضافة تقييمات منشورة بعد. نرحب بتقييمك بعد الاستفادة من خدماتنا."
+
     ,reviewsTitle: "قيّم خدماتنا"
     ,reviewsIntro: "رأيك يساعدنا على تحسين خدماتنا وتقديم تجربة أفضل."
     ,ratingLabel: "كيف تقيّم خدمتنا؟"
@@ -1160,6 +1244,11 @@ const translations = {
     whatsappMessage:
       "Hello, I would like to ask about one of Haramain LLC's services."
 
+    ,customerReviewsTitle: "Customer Reviews"
+    ,customerReviewsIntro: "Experiences and feedback from customers who have used Haramain LLC services."
+    ,reviewsEmptyTitle: "Be the First to Share Your Experience"
+    ,reviewsEmptyText: "No published reviews yet. We welcome your feedback after using our services."
+
     ,reviewsTitle: "Rate Our Services"
     ,reviewsIntro: "Your feedback helps us improve our services and provide a better experience."
     ,ratingLabel: "How would you rate our service?"
@@ -1203,6 +1292,67 @@ function updateWhatsApp(language) {
 }
 
 
+
+
+/*
+  العملاء الحقيقيون:
+  أضف هنا فقط التقييمات التي استلمتها فعليًا ووافقت على نشرها.
+  لا يتم إنشاء أو عرض تقييمات وهمية.
+*/
+const approvedReviews = [
+  // مثال بعد استلام تقييم حقيقي:
+  // {
+  //   rating: 5,
+  //   name: "اسم العميل",
+  //   serviceAr: "حجز التذاكر",
+  //   serviceEn: "Ticket Booking",
+  //   textAr: "خدمة ممتازة وسريعة.",
+  //   textEn: "Excellent and fast service."
+  // }
+];
+
+function renderApprovedReviews(language) {
+  const grid = document.getElementById("reviewsGrid");
+  const empty = document.getElementById("reviewsEmpty");
+
+  grid.innerHTML = "";
+
+  if (!approvedReviews.length) {
+    empty.style.display = "block";
+    return;
+  }
+
+  empty.style.display = "none";
+
+  approvedReviews.forEach(review => {
+    const card = document.createElement("article");
+    card.className = "review-card";
+
+    const stars = Math.max(1, Math.min(5, Number(review.rating) || 5));
+    const starsText = "★".repeat(stars) + "☆".repeat(5 - stars);
+
+    const service = language === "ar" ? review.serviceAr : review.serviceEn;
+    const reviewText = language === "ar" ? review.textAr : review.textEn;
+
+    card.innerHTML = `
+      <div class="review-stars" aria-label="${stars} out of 5">${starsText}</div>
+      <p>${escapeHtml(reviewText)}</p>
+      <div class="review-name">${escapeHtml(review.name)}</div>
+      <div class="review-service">${escapeHtml(service)}</div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 let selectedRating = 0;
 
@@ -1394,6 +1544,7 @@ function toggleLanguage() {
 
   updateWhatsApp(currentLanguage);
   updateReviewForm(currentLanguage);
+  renderApprovedReviews(currentLanguage);
 
 }
 
@@ -1401,6 +1552,7 @@ function toggleLanguage() {
 /* إعداد واتساب عند تحميل الصفحة */
 updateWhatsApp("ar");
 updateReviewForm("ar");
+renderApprovedReviews("ar");
 
 </script>
 
