@@ -1311,6 +1311,17 @@ const approvedReviews = [
   // }
 ];
 
+const serviceTranslations = {
+  "سداد الفواتير والرسوم": "Bills & Electronic Fees",
+  "المخالفات المرورية": "Traffic Fines",
+  "الكهرباء والاتصالات": "Electricity & Telecom",
+  "مستحقات الإيجار": "Rental Payments",
+  "حجز التذاكر": "Ticket Booking",
+  "حجز الروضة الشريفة": "Rawdah Booking Assistance",
+  "خدمات المزارات": "Ziyarat Transportation",
+  "خدمات إلكترونية أخرى": "Other Electronic Services"
+};
+
 function renderApprovedReviews(language) {
   const grid = document.getElementById("reviewsGrid");
   const empty = document.getElementById("reviewsEmpty");
@@ -1331,13 +1342,23 @@ function renderApprovedReviews(language) {
     const stars = Math.max(1, Math.min(5, Number(review.rating) || 5));
     const starsText = "★".repeat(stars) + "☆".repeat(5 - stars);
 
-    const service = language === "ar" ? review.serviceAr : review.serviceEn;
-    const reviewText = language === "ar" ? review.textAr : review.textEn;
+    // Arabic page uses the original Arabic review.
+    // English page uses the approved English translation only;
+    // it never falls back to Arabic text.
+    const service = language === "ar"
+      ? (review.serviceAr || review.serviceEn || "")
+      : (review.serviceEn || serviceTranslations[review.serviceAr] || "Service");
+
+    const reviewText = language === "ar"
+      ? (review.textAr || review.textEn || "")
+      : (review.textEn || "English translation not available.");
+
+    const name = review.name || (language === "ar" ? "عميل" : "Customer");
 
     card.innerHTML = `
       <div class="review-stars" aria-label="${stars} out of 5">${starsText}</div>
       <p>${escapeHtml(reviewText)}</p>
-      <div class="review-name">${escapeHtml(review.name)}</div>
+      <div class="review-name">${escapeHtml(name)}</div>
       <div class="review-service">${escapeHtml(service)}</div>
     `;
 
