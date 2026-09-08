@@ -1174,8 +1174,8 @@ const translations = {
     ,namePlaceholder: "اكتب اسمك"
     ,commentLabel: "ملاحظاتك"
     ,commentPlaceholder: "اكتب رأيك عن الخدمة..."
-    ,reviewSubmit: "⭐ إرسال التقييم عبر واتساب"
-    ,reviewNote: "سيتم فتح واتساب لإرسال تقييمك مباشرة إلى فريق الحرمين."
+    ,reviewSubmit: "⭐ إرسال التقييم"
+    ,reviewNote: "سيتم استلام تقييمك ومراجعته قبل نشره على الموقع."
     ,reviewSelect: [
       ["سداد الفواتير والرسوم","سداد الفواتير والرسوم"],
       ["المخالفات المرورية","المخالفات المرورية"],
@@ -1268,8 +1268,8 @@ const translations = {
     ,namePlaceholder: "Enter your name"
     ,commentLabel: "Your Feedback"
     ,commentPlaceholder: "Tell us about your experience..."
-    ,reviewSubmit: "⭐ Send Review via WhatsApp"
-    ,reviewNote: "WhatsApp will open so you can send your review directly to Haramain LLC."
+    ,reviewSubmit: "⭐ Submit Review"
+    ,reviewNote: "Your review will be received and reviewed before it is published on the website."
     ,reviewSelect: [
       ["سداد الفواتير والرسوم","Bills & Electronic Fees"],
       ["المخالفات المرورية","Traffic Fines"],
@@ -1352,7 +1352,9 @@ function renderApprovedReviews(language) {
       ? (review.textAr || review.textEn || "")
       : (review.textEn || "English translation not available.");
 
-    const name = review.name || (language === "ar" ? "عميل" : "Customer");
+    const name = language === "ar"
+      ? (review.nameAr || review.name || "عميل")
+      : (review.nameEn || review.name || "Customer");
 
     card.innerHTML = `
       <div class="review-stars" aria-label="${stars} out of 5">${starsText}</div>
@@ -1400,6 +1402,7 @@ function escapeHtml(value) {
 }
 
 let selectedRating = 0;
+let isSubmittingReview = false;
 
 function setRating(rating) {
   selectedRating = rating;
@@ -1446,6 +1449,8 @@ function updateReviewForm(language) {
 }
 
 function sendReview() {
+  if (isSubmittingReview) return;
+
   if (selectedRating === 0) {
     alert(currentLanguage === "ar"
       ? "يرجى اختيار تقييم من 1 إلى 5 نجوم."
@@ -1463,6 +1468,39 @@ function sendReview() {
   const service = document.getElementById("reviewService").value;
   const name = document.getElementById("reviewName").value.trim();
   const comment = document.getElementById("reviewComment").value.trim();
+
+  if (!comment) {
+    alert(currentLanguage === "ar"
+      ? "يرجى كتابة رأيك قبل إرسال التقييم."
+      : "Please write your feedback before submitting the review.");
+    document.getElementById("reviewComment").focus();
+    return;
+  }
+
+  if (comment.length < 3) {
+    alert(currentLanguage === "ar"
+      ? "يرجى كتابة تعليق لا يقل عن 3 أحرف."
+      : "Please enter a comment of at least 3 characters.");
+    document.getElementById("reviewComment").focus();
+    return;
+  }
+
+  if (comment.length > 1500) {
+    alert(currentLanguage === "ar"
+      ? "يرجى اختصار التعليق إلى 1500 حرف أو أقل."
+      : "Please shorten your comment to 1500 characters or fewer.");
+    document.getElementById("reviewComment").focus();
+    return;
+  }
+
+  if (name.length > 100) {
+    alert(currentLanguage === "ar"
+      ? "يرجى اختصار الاسم إلى 100 حرف أو أقل."
+      : "Please shorten your name to 100 characters or fewer.");
+    document.getElementById("reviewName").focus();
+    return;
+  }
+
   const submitButton = document.getElementById("reviewSubmit");
   const form = document.getElementById("reviewBackendForm");
   form.action = REVIEW_API_URL;
@@ -1473,6 +1511,7 @@ function sendReview() {
   document.getElementById("backendComment").value = comment;
   document.getElementById("backendLanguage").value = currentLanguage;
 
+  isSubmittingReview = true;
   submitButton.disabled = true;
   submitButton.style.opacity = "0.7";
   submitButton.textContent = currentLanguage === "ar" ? "جاري إرسال التقييم..." : "Sending review...";
@@ -1480,6 +1519,7 @@ function sendReview() {
   form.submit();
 
   setTimeout(() => {
+    isSubmittingReview = false;
     submitButton.disabled = false;
     submitButton.style.opacity = "1";
     submitButton.textContent = translations[currentLanguage].reviewSubmit;
