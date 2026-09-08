@@ -1079,6 +1079,17 @@
 </a>
 
 
+<iframe name="reviewSubmitFrame" id="reviewSubmitFrame" style="display:none;"></iframe>
+<form id="reviewBackendForm" action="#" method="POST" target="reviewSubmitFrame" style="display:none;">
+  <input type="hidden" name="action" value="submitReview">
+  <input type="hidden" name="rating" id="backendRating">
+  <input type="hidden" name="service" id="backendService">
+  <input type="hidden" name="name" id="backendName">
+  <input type="hidden" name="comment" id="backendComment">
+  <input type="hidden" name="language" id="backendLanguage">
+  <input type="text" name="website" tabindex="-1" autocomplete="off" style="display:none;">
+</form>
+
 <script>
 
 let currentLanguage = "ar";
@@ -1299,17 +1310,8 @@ function updateWhatsApp(language) {
   أضف هنا فقط التقييمات التي استلمتها فعليًا ووافقت على نشرها.
   لا يتم إنشاء أو عرض تقييمات وهمية.
 */
-const approvedReviews = [
-  // مثال بعد استلام تقييم حقيقي:
-  // {
-  //   rating: 5,
-  //   name: "اسم العميل",
-  //   serviceAr: "حجز التذاكر",
-  //   serviceEn: "Ticket Booking",
-  //   textAr: "خدمة ممتازة وسريعة.",
-  //   textEn: "Excellent and fast service."
-  // }
-];
+const REVIEW_API_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+let approvedReviews = [];
 
 const serviceTranslations = {
   "سداد الفواتير والرسوم": "Bills & Electronic Fees",
@@ -1342,9 +1344,6 @@ function renderApprovedReviews(language) {
     const stars = Math.max(1, Math.min(5, Number(review.rating) || 5));
     const starsText = "★".repeat(stars) + "☆".repeat(5 - stars);
 
-    // Arabic page uses the original Arabic review.
-    // English page uses the approved English translation only;
-    // it never falls back to Arabic text.
     const service = language === "ar"
       ? (review.serviceAr || review.serviceEn || "")
       : (review.serviceEn || serviceTranslations[review.serviceAr] || "Service");
@@ -1364,6 +1363,31 @@ function renderApprovedReviews(language) {
 
     grid.appendChild(card);
   });
+}
+
+function loadApprovedReviews() {
+  if (!REVIEW_API_URL || REVIEW_API_URL.includes("PASTE_YOUR")) {
+    renderApprovedReviews(currentLanguage);
+    return;
+  }
+
+  const callbackName = "haramainReviewsCallback_" + Date.now();
+  const script = document.createElement("script");
+
+  window[callbackName] = function(data) {
+    approvedReviews = Array.isArray(data) ? data : [];
+    renderApprovedReviews(currentLanguage);
+    cleanup();
+  };
+
+  function cleanup() {
+    try { delete window[callbackName]; } catch (e) {}
+    script.remove();
+  }
+
+  script.onerror = cleanup;
+  script.src = REVIEW_API_URL + "?action=approved&callback=" + encodeURIComponent(callbackName);
+  document.body.appendChild(script);
 }
 
 function escapeHtml(value) {
@@ -1429,34 +1453,43 @@ function sendReview() {
     return;
   }
 
-  const t = translations[currentLanguage];
+  if (!REVIEW_API_URL || REVIEW_API_URL.includes("PASTE_YOUR")) {
+    alert(currentLanguage === "ar"
+      ? "نظام التقييم لم يتم ربطه بعد. يرجى التواصل مع إدارة الموقع."
+      : "The review system has not been connected yet. Please contact the website administrator.");
+    return;
+  }
+
   const service = document.getElementById("reviewService").value;
   const name = document.getElementById("reviewName").value.trim();
   const comment = document.getElementById("reviewComment").value.trim();
+  const submitButton = document.getElementById("reviewSubmit");
+  const form = document.getElementById("reviewBackendForm");
+  form.action = REVIEW_API_URL;
 
-  const serviceLabel = t.reviewSelect.find(item => item[0] === service)?.[1] || service;
-  const stars = "★".repeat(selectedRating) + "☆".repeat(5 - selectedRating);
+  document.getElementById("backendRating").value = selectedRating;
+  document.getElementById("backendService").value = service;
+  document.getElementById("backendName").value = name;
+  document.getElementById("backendComment").value = comment;
+  document.getElementById("backendLanguage").value = currentLanguage;
 
-  let message;
+  submitButton.disabled = true;
+  submitButton.style.opacity = "0.7";
+  submitButton.textContent = currentLanguage === "ar" ? "جاري إرسال التقييم..." : "Sending review...";
 
-  if (currentLanguage === "ar") {
-    message =
-      "⭐ تقييم جديد من موقع Haramain LLC\n" +
-      "التقييم: " + stars + " (" + selectedRating + "/5)\n" +
-      "الخدمة: " + serviceLabel + "\n" +
-      "الاسم: " + (name || "غير مذكور") + "\n" +
-      "الملاحظات: " + (comment || "لا توجد ملاحظات");
-  } else {
-    message =
-      "⭐ New review from the Haramain LLC website\n" +
-      "Rating: " + stars + " (" + selectedRating + "/5)\n" +
-      "Service: " + serviceLabel + "\n" +
-      "Name: " + (name || "Not provided") + "\n" +
-      "Feedback: " + (comment || "No feedback provided");
-  }
+  form.submit();
 
-  const url = "https://wa.me/22220000288?text=" + encodeURIComponent(message);
-  window.open(url, "_blank");
+  setTimeout(() => {
+    submitButton.disabled = false;
+    submitButton.style.opacity = "1";
+    submitButton.textContent = translations[currentLanguage].reviewSubmit;
+    alert(currentLanguage === "ar"
+      ? "تم استلام تقييمك بنجاح. سيظهر على الموقع بعد مراجعته والموافقة عليه."
+      : "Your review was received successfully. It will appear on the website after review and approval.");
+    document.getElementById("reviewName").value = "";
+    document.getElementById("reviewComment").value = "";
+    setRating(0);
+  }, 1200);
 }
 
 document.getElementById("reviewSubmit").addEventListener("click", sendReview);
@@ -1588,6 +1621,7 @@ function toggleLanguage() {
 updateWhatsApp("ar");
 updateReviewForm("ar");
 renderApprovedReviews("ar");
+loadApprovedReviews();
 
 </script>
 
