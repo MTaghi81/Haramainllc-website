@@ -381,6 +381,94 @@
       z-index: 2000;
     }
 
+
+    /* تقييم الخدمات */
+    .reviews-section {
+      background: #f7f8f5;
+    }
+
+    .review-box {
+      max-width: 760px;
+      margin: auto;
+      background: white;
+      border: 1px solid #e6eae6;
+      border-radius: 24px;
+      padding: 35px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    }
+
+    .rating-stars {
+      display: flex;
+      direction: ltr;
+      justify-content: center;
+      gap: 8px;
+      margin: 8px 0 25px;
+    }
+
+    .star {
+      border: 0;
+      background: transparent;
+      color: #c9cec9;
+      font-size: 42px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 2px;
+      transition: .2s;
+    }
+
+    .star:hover,
+    .star.active {
+      color: var(--gold);
+      transform: scale(1.08);
+    }
+
+    .review-label {
+      display: block;
+      color: var(--green);
+      font-weight: bold;
+      margin: 16px 0 7px;
+    }
+
+    .review-select,
+    .review-input,
+    .review-textarea {
+      width: 100%;
+      border: 1px solid #dce2dd;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font: inherit;
+      color: var(--text);
+      background: #fbfcfa;
+      outline: none;
+    }
+
+    .review-select:focus,
+    .review-input:focus,
+    .review-textarea:focus {
+      border-color: var(--green-light);
+      box-shadow: 0 0 0 3px rgba(29,89,64,.08);
+    }
+
+    .review-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .review-submit {
+      width: 100%;
+      border: 0;
+      margin-top: 22px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .review-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
     @media (max-width: 760px) {
 
       header {
@@ -443,6 +531,8 @@
     <a href="#about" data-ar="من نحن" data-en="About Us">من نحن</a>
 
     <a href="#contact" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</a>
+
+    <a href="#reviews" data-ar="تقييم خدماتنا" data-en="Rate Us">تقييم خدماتنا</a>
 
     <button class="language" onclick="toggleLanguage()">English</button>
 
@@ -810,6 +900,57 @@
 </section>
 
 
+
+<section class="reviews-section" id="reviews">
+
+  <div class="section-title">
+    <h2 id="reviewsTitle">قيّم خدماتنا</h2>
+    <p id="reviewsIntro">رأيك يساعدنا على تحسين خدماتنا وتقديم تجربة أفضل.</p>
+  </div>
+
+  <div class="review-box">
+
+    <label class="review-label" id="ratingLabel">كيف تقيّم خدمتنا؟</label>
+
+    <div class="rating-stars" id="ratingStars" aria-label="Service rating">
+      <button type="button" class="star" data-rating="1" aria-label="1 star">★</button>
+      <button type="button" class="star" data-rating="2" aria-label="2 stars">★</button>
+      <button type="button" class="star" data-rating="3" aria-label="3 stars">★</button>
+      <button type="button" class="star" data-rating="4" aria-label="4 stars">★</button>
+      <button type="button" class="star" data-rating="5" aria-label="5 stars">★</button>
+    </div>
+
+    <label class="review-label" id="serviceLabel" for="reviewService">الخدمة التي استخدمتها</label>
+    <select class="review-select" id="reviewService">
+      <option value="سداد الفواتير والرسوم">سداد الفواتير والرسوم</option>
+      <option value="المخالفات المرورية">المخالفات المرورية</option>
+      <option value="الكهرباء والاتصالات">الكهرباء والاتصالات</option>
+      <option value="مستحقات الإيجار">مستحقات الإيجار</option>
+      <option value="حجز التذاكر">حجز التذاكر</option>
+      <option value="حجز الروضة الشريفة">حجز الروضة الشريفة</option>
+      <option value="خدمات المزارات">خدمات المزارات</option>
+      <option value="خدمات إلكترونية أخرى">خدمات إلكترونية أخرى</option>
+    </select>
+
+    <label class="review-label" id="nameLabel" for="reviewName">اسمك (اختياري)</label>
+    <input class="review-input" id="reviewName" type="text" placeholder="اكتب اسمك">
+
+    <label class="review-label" id="commentLabel" for="reviewComment">ملاحظاتك</label>
+    <textarea class="review-textarea" id="reviewComment" placeholder="اكتب رأيك عن الخدمة..."></textarea>
+
+    <button type="button" class="btn primary review-submit" id="reviewSubmit">
+      ⭐ إرسال التقييم عبر واتساب
+    </button>
+
+    <p class="review-note" id="reviewNote">
+      سيتم فتح واتساب لإرسال تقييمك مباشرة إلى فريق الحرمين.
+    </p>
+
+  </div>
+
+</section>
+
+
 <section class="contact" id="contact">
 
   <h2 id="contactTitle">
@@ -930,6 +1071,27 @@ const translations = {
     whatsappMessage:
       "السلام عليكم، أريد الاستفسار عن إحدى خدمات الحرمين."
 
+    ,reviewsTitle: "قيّم خدماتنا"
+    ,reviewsIntro: "رأيك يساعدنا على تحسين خدماتنا وتقديم تجربة أفضل."
+    ,ratingLabel: "كيف تقيّم خدمتنا؟"
+    ,serviceLabel: "الخدمة التي استخدمتها"
+    ,nameLabel: "اسمك (اختياري)"
+    ,namePlaceholder: "اكتب اسمك"
+    ,commentLabel: "ملاحظاتك"
+    ,commentPlaceholder: "اكتب رأيك عن الخدمة..."
+    ,reviewSubmit: "⭐ إرسال التقييم عبر واتساب"
+    ,reviewNote: "سيتم فتح واتساب لإرسال تقييمك مباشرة إلى فريق الحرمين."
+    ,reviewSelect: [
+      ["سداد الفواتير والرسوم","سداد الفواتير والرسوم"],
+      ["المخالفات المرورية","المخالفات المرورية"],
+      ["الكهرباء والاتصالات","الكهرباء والاتصالات"],
+      ["مستحقات الإيجار","مستحقات الإيجار"],
+      ["حجز التذاكر","حجز التذاكر"],
+      ["حجز الروضة الشريفة","حجز الروضة الشريفة"],
+      ["خدمات المزارات","خدمات المزارات"],
+      ["خدمات إلكترونية أخرى","خدمات إلكترونية أخرى"]
+    ]
+
   },
 
 
@@ -998,6 +1160,27 @@ const translations = {
     whatsappMessage:
       "Hello, I would like to ask about one of Haramain LLC's services."
 
+    ,reviewsTitle: "Rate Our Services"
+    ,reviewsIntro: "Your feedback helps us improve our services and provide a better experience."
+    ,ratingLabel: "How would you rate our service?"
+    ,serviceLabel: "Service you used"
+    ,nameLabel: "Your Name (Optional)"
+    ,namePlaceholder: "Enter your name"
+    ,commentLabel: "Your Feedback"
+    ,commentPlaceholder: "Tell us about your experience..."
+    ,reviewSubmit: "⭐ Send Review via WhatsApp"
+    ,reviewNote: "WhatsApp will open so you can send your review directly to Haramain LLC."
+    ,reviewSelect: [
+      ["سداد الفواتير والرسوم","Bills & Electronic Fees"],
+      ["المخالفات المرورية","Traffic Fines"],
+      ["الكهرباء والاتصالات","Electricity & Telecom"],
+      ["مستحقات الإيجار","Rental Payments"],
+      ["حجز التذاكر","Ticket Booking"],
+      ["حجز الروضة الشريفة","Rawdah Booking Assistance"],
+      ["خدمات المزارات","Ziyarat Transportation"],
+      ["خدمات إلكترونية أخرى","Other Electronic Services"]
+    ]
+
   }
 
 };
@@ -1019,6 +1202,93 @@ function updateWhatsApp(language) {
   document.getElementById("whatsappFloat").href = url;
 }
 
+
+
+let selectedRating = 0;
+
+function setRating(rating) {
+  selectedRating = rating;
+  document.querySelectorAll(".star").forEach(star => {
+    star.classList.toggle("active", Number(star.dataset.rating) <= rating);
+  });
+}
+
+document.querySelectorAll(".star").forEach(star => {
+  star.addEventListener("click", () => setRating(Number(star.dataset.rating)));
+});
+
+function updateReviewForm(language) {
+  const t = translations[language];
+
+  document.getElementById("reviewsTitle").textContent = t.reviewsTitle;
+  document.getElementById("reviewsIntro").textContent = t.reviewsIntro;
+  document.getElementById("ratingLabel").textContent = t.ratingLabel;
+  document.getElementById("serviceLabel").textContent = t.serviceLabel;
+  document.getElementById("nameLabel").textContent = t.nameLabel;
+  document.getElementById("commentLabel").textContent = t.commentLabel;
+  document.getElementById("reviewSubmit").textContent = t.reviewSubmit;
+  document.getElementById("reviewNote").textContent = t.reviewNote;
+
+  const nameInput = document.getElementById("reviewName");
+  const commentInput = document.getElementById("reviewComment");
+  nameInput.placeholder = t.namePlaceholder;
+  commentInput.placeholder = t.commentPlaceholder;
+
+  const select = document.getElementById("reviewService");
+  const currentValue = select.value;
+  select.innerHTML = "";
+
+  t.reviewSelect.forEach(([value, label]) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    select.appendChild(option);
+  });
+
+  if ([...select.options].some(o => o.value === currentValue)) {
+    select.value = currentValue;
+  }
+}
+
+function sendReview() {
+  if (selectedRating === 0) {
+    alert(currentLanguage === "ar"
+      ? "يرجى اختيار تقييم من 1 إلى 5 نجوم."
+      : "Please select a rating from 1 to 5 stars.");
+    return;
+  }
+
+  const t = translations[currentLanguage];
+  const service = document.getElementById("reviewService").value;
+  const name = document.getElementById("reviewName").value.trim();
+  const comment = document.getElementById("reviewComment").value.trim();
+
+  const serviceLabel = t.reviewSelect.find(item => item[0] === service)?.[1] || service;
+  const stars = "★".repeat(selectedRating) + "☆".repeat(5 - selectedRating);
+
+  let message;
+
+  if (currentLanguage === "ar") {
+    message =
+      "⭐ تقييم جديد من موقع Haramain LLC\n" +
+      "التقييم: " + stars + " (" + selectedRating + "/5)\n" +
+      "الخدمة: " + serviceLabel + "\n" +
+      "الاسم: " + (name || "غير مذكور") + "\n" +
+      "الملاحظات: " + (comment || "لا توجد ملاحظات");
+  } else {
+    message =
+      "⭐ New review from the Haramain LLC website\n" +
+      "Rating: " + stars + " (" + selectedRating + "/5)\n" +
+      "Service: " + serviceLabel + "\n" +
+      "Name: " + (name || "Not provided") + "\n" +
+      "Feedback: " + (comment || "No feedback provided");
+  }
+
+  const url = "https://wa.me/22220000288?text=" + encodeURIComponent(message);
+  window.open(url, "_blank");
+}
+
+document.getElementById("reviewSubmit").addEventListener("click", sendReview);
 
 function toggleLanguage() {
 
@@ -1123,12 +1393,14 @@ function toggleLanguage() {
 
 
   updateWhatsApp(currentLanguage);
+  updateReviewForm(currentLanguage);
 
 }
 
 
 /* إعداد واتساب عند تحميل الصفحة */
 updateWhatsApp("ar");
+updateReviewForm("ar");
 
 </script>
 
