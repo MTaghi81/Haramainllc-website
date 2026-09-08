@@ -1083,9 +1083,9 @@
 <form id="reviewBackendForm" action="#" method="POST" target="reviewSubmitFrame" style="display:none;">
   <input type="hidden" name="action" value="submitReview">
   <input type="hidden" name="rating" id="backendRating">
-  <input type="hidden" name="service" id="backendService">
+  <input type="hidden" name="serviceAr" id="backendService">
   <input type="hidden" name="name" id="backendName">
-  <input type="hidden" name="comment" id="backendComment">
+  <input type="hidden" name="review" id="backendComment">
   <input type="hidden" name="language" id="backendLanguage">
   <input type="text" name="website" tabindex="-1" autocomplete="off" style="display:none;">
 </form>
@@ -1310,7 +1310,7 @@ function updateWhatsApp(language) {
   أضف هنا فقط التقييمات التي استلمتها فعليًا ووافقت على نشرها.
   لا يتم إنشاء أو عرض تقييمات وهمية.
 */
-const REVIEW_API_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const REVIEW_API_URL = "https://script.google.com/macros/s/AKfycbyKVZTi9fXxixgA-DRbJWRtEVEyVu7khvugH6u9A6GXo4REP67GHRa7KOOxsd6NSRWlcg/exec";
 let approvedReviews = [];
 
 const serviceTranslations = {
@@ -1375,7 +1375,7 @@ function loadApprovedReviews() {
   const script = document.createElement("script");
 
   window[callbackName] = function(data) {
-    approvedReviews = Array.isArray(data) ? data : [];
+    approvedReviews = Array.isArray(data) ? data : (Array.isArray(data.reviews) ? data.reviews : []);
     renderApprovedReviews(currentLanguage);
     cleanup();
   };
@@ -1622,6 +1622,9 @@ updateWhatsApp("ar");
 updateReviewForm("ar");
 renderApprovedReviews("ar");
 loadApprovedReviews();
+
+// تحديث التقييمات المعتمدة تلقائيًا كل دقيقة دون تعديل الموقع يدويًا.
+setInterval(loadApprovedReviews, 60000);
 
 </script>
 
