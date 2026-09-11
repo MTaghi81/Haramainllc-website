@@ -105,6 +105,7 @@
     }
 
     .hero {
+      position: relative;
       min-height: 650px;
       display: flex;
       align-items: center;
@@ -112,12 +113,26 @@
       text-align: center;
       color: white;
       padding: 80px 6%;
+      overflow: hidden;
+      isolation: isolate;
       background:
-        radial-gradient(circle at 50% 30%, #2c6147 0%, var(--green) 48%, #092319 100%);
+        linear-gradient(rgba(5, 34, 24, 0.48), rgba(5, 34, 24, 0.70)),
+        url('haramain-landmarks-background.jpg') center center / cover no-repeat;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(4, 31, 22, 0.18), rgba(4, 31, 22, 0.78));
+      z-index: -1;
     }
 
     .hero-content {
       max-width: 850px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 2px 18px rgba(0,0,0,.38);
     }
 
     .badge {
@@ -556,6 +571,7 @@
       .hero {
         min-height: 590px;
         padding: 65px 5%;
+        background-position: center center;
       }
 
       section {
@@ -576,6 +592,7 @@
       }
     }
   </style>
+  <link rel="preload" as="image" href="haramain-landmarks-background.jpg">
 </head>
 
 <body>
@@ -1373,6 +1390,39 @@ const serviceTranslations = {
   "خدمات إلكترونية أخرى": "Other Electronic Services"
 };
 
+// يعرض 3 تقييمات في كل زيارة، وتنتقل المجموعة إلى الثلاثة التالية في الزيارة القادمة.
+// تغيير اللغة أو إعادة الرسم بسبب التحديث الدوري لا يغيّر المجموعة الحالية.
+const REVIEW_VISIT_INDEX_KEY = "haramain_review_visit_group_v2";
+const REVIEWS_PER_VISIT = 3;
+let currentReviewGroupStart = null;
+
+function chooseReviewGroupForThisVisit() {
+  if (!approvedReviews.length) {
+    currentReviewGroupStart = null;
+    return;
+  }
+
+  // نختار المجموعة مرة واحدة فقط أثناء تحميل هذه الزيارة.
+  if (currentReviewGroupStart !== null) return;
+
+  let groupIndex = 0;
+  try {
+    groupIndex = parseInt(localStorage.getItem(REVIEW_VISIT_INDEX_KEY) || "0", 10);
+    if (!Number.isFinite(groupIndex) || groupIndex < 0) groupIndex = 0;
+  } catch (e) {
+    groupIndex = 0;
+  }
+
+  const groupCount = Math.max(1, Math.ceil(approvedReviews.length / REVIEWS_PER_VISIT));
+  const normalizedGroup = groupIndex % groupCount;
+  currentReviewGroupStart = normalizedGroup * REVIEWS_PER_VISIT;
+
+  // الزيارة القادمة تحصل على المجموعة التالية.
+  try {
+    localStorage.setItem(REVIEW_VISIT_INDEX_KEY, String((normalizedGroup + 1) % groupCount));
+  } catch (e) {}
+}
+
 function renderApprovedReviews(language) {
   const grid = document.getElementById("reviewsGrid");
   const empty = document.getElementById("reviewsEmpty");
@@ -1380,36 +1430,46 @@ function renderApprovedReviews(language) {
   grid.innerHTML = "";
 
   if (!approvedReviews.length) {
+    currentReviewGroupStart = null;
     empty.style.display = "block";
     return;
   }
 
   empty.style.display = "none";
+  chooseReviewGroupForThisVisit();
 
-  approvedReviews.forEach(review => {
+  const start = currentReviewGroupStart || 0;
+  const reviewsForThisVisit = [];
+
+  for (let i = 0; i < REVIEWS_PER_VISIT; i++) {
+    const review = approvedReviews[(start + i) % approvedReviews.length];
+    if (review) reviewsForThisVisit.push(review);
+  }
+
+  reviewsForThisVisit.forEach(review => {
     const card = document.createElement("article");
     card.className = "review-card";
 
     const stars = Math.max(1, Math.min(5, Number(review.rating) || 5));
     const starsText = "★".repeat(stars) + "☆".repeat(5 - stars);
 
-    const service = language === "ar"
-      ? (review.serviceAr || review.serviceEn || "")
-      : (review.serviceEn || serviceTranslations[review.serviceAr] || "Service");
-
-    const reviewText = language === "ar"
-      ? (review.textAr || review.textEn || "")
-      : (review.textEn || "English translation not available.");
-
     const name = language === "ar"
       ? (review.nameAr || review.name || "عميل")
       : (review.nameEn || review.name || "Customer");
 
+    const service = language === "ar"
+      ? (review.serviceAr || review.serviceEn || "خدمة")
+      : (review.serviceEn || review.serviceAr || "Service");
+
+    const text = language === "ar"
+      ? (review.textAr || review.textEn || "")
+      : (review.textEn || review.textAr || "");
+
     card.innerHTML = `
-      <div class="review-stars" aria-label="${stars} out of 5">${starsText}</div>
-      <p>${escapeHtml(reviewText)}</p>
-      <div class="review-name">${escapeHtml(name)}</div>
+      <div class="review-stars" aria-label="${stars} out of 5 stars">${starsText}</div>
       <div class="review-service">${escapeHtml(service)}</div>
+      <p class="review-text">“${escapeHtml(text)}”</p>
+      <div class="review-name">${escapeHtml(name)}</div>
     `;
 
     grid.appendChild(card);
