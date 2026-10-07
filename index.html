@@ -244,33 +244,52 @@
     /* صورة الطائرة والقطار */
     .travel-image {
       width: 100%;
-      height: 145px;
+      height: 175px;
       border-radius: 15px;
       margin-bottom: 18px;
-      background:
-        linear-gradient(135deg, #edf4f0, #f8f5ea);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 25px;
+      background: #f2f6f3;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
       overflow: hidden;
       border: 1px solid #e5e9e5;
     }
 
-    .travel-item {
-      text-align: center;
-      color: var(--green);
+    .travel-photo {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      background: #e8eee9;
     }
 
-    .travel-item .travel-icon {
-      font-size: 55px;
+    .travel-photo img {
+      width: 100%;
+      height: 100%;
       display: block;
-      line-height: 1.2;
+      object-fit: cover;
     }
 
-    .travel-item span {
-      font-size: 12px;
+    .travel-photo-label {
+      position: absolute;
+      right: 7px;
+      left: 7px;
+      bottom: 7px;
+      padding: 4px 7px;
+      border-radius: 8px;
+      background: rgba(18,59,42,.88);
+      color: white;
+      font-size: 11px;
       font-weight: bold;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .travel-credit {
+      margin-top: -10px;
+      margin-bottom: 14px;
+      color: #8a948e;
+      font-size: 9px;
+      text-align: center;
     }
 
     .service h3 {
@@ -586,7 +605,7 @@
       }
 
       .travel-image {
-        height: 130px;
+        height: 145px;
       }
     }
   </style>
@@ -759,18 +778,32 @@
     <!-- حجز التذاكر -->
     <div class="service">
 
-      <div class="travel-image">
+      <div class="travel-image" aria-label="صور الطائرة والقطار">
 
-        <div class="travel-item">
-          <span class="travel-icon">✈️</span>
-          <span data-ar="طيران" data-en="Flights">طيران</span>
+        <div class="travel-photo">
+          <img
+            src="https://commons.wikimedia.org/wiki/Special:Redirect/file/MAURITANIA%20AIRLINES%20BOEING%20737-8%20MAX%205T-CLJ.jpg"
+            alt="طائرة الخطوط الجوية الموريتانية"
+            loading="lazy">
+          <div class="travel-photo-label" data-ar="الخطوط الجوية الموريتانية" data-en="Mauritania Airlines">
+            الخطوط الجوية الموريتانية
+          </div>
         </div>
 
-        <div class="travel-item">
-          <span class="travel-icon">🚆</span>
-          <span data-ar="قطارات" data-en="Trains">قطارات</span>
+        <div class="travel-photo">
+          <img
+            src="https://commons.wikimedia.org/wiki/Special:Redirect/file/%D9%82%D8%B7%D8%A7%D8%B1%20%D8%A7%D9%84%D8%AD%D8%B1%D9%85%D9%8A%D9%86%202023.jpg"
+            alt="قطار الحرمين السريع"
+            loading="lazy">
+          <div class="travel-photo-label" data-ar="قطار الحرمين السريع" data-en="Haramain High-Speed Train">
+            قطار الحرمين السريع
+          </div>
         </div>
 
+      </div>
+
+      <div class="travel-credit">
+        الصور: Wikimedia Commons — Mauritania Airlines / Haramain High-Speed Railway
       </div>
 
       <h3 data-ar="حجز التذاكر"
@@ -1377,13 +1410,14 @@ const REVIEW_API_URL = "https://script.google.com/macros/s/AKfycbyKVZTi9fXxixgA-
 let approvedReviews = [];
 
 const serviceTranslations = {
-  "سداد الفواتير والرسوم": "Bills & Electronic Fees",
+  "سداد المشتريات الإلكترونية والرسوم": "Electronic Purchases & Fees",
   "المخالفات المرورية": "Traffic Fines",
   "الكهرباء والاتصالات": "Electricity & Telecom",
-  "مستحقات الإيجار": "Rental Payments",
+  "حجز فنادق وشقق مفروشة": "Hotels & Furnished Apartments",
   "حجز التذاكر": "Ticket Booking",
   "حجز الروضة الشريفة": "Rawdah Booking Assistance",
-  "خدمات المزارات": "Ziyarat Transportation",
+  "زيارة الأماكن المقدسة والسياحية": "Sacred & Tourist Visits",
+  "النقل من المدينة إلى مكة وجدة": "Transportation from Madinah to Makkah & Jeddah",
   "خدمات إلكترونية أخرى": "Other Electronic Services"
 };
 
@@ -1473,28 +1507,51 @@ function renderApprovedReviews(language) {
   });
 }
 
-function loadApprovedReviews() {
+function loadApprovedReviews(attempt = 0) {
   if (!REVIEW_API_URL || REVIEW_API_URL.includes("PASTE_YOUR")) {
     renderApprovedReviews(currentLanguage);
     return;
   }
 
-  const callbackName = "haramainReviewsCallback_" + Date.now();
+  const callbackName = "haramainReviewsCallback_" + Date.now() + "_" + Math.random().toString(36).slice(2);
   const script = document.createElement("script");
+  let finished = false;
 
   window[callbackName] = function(data) {
-    approvedReviews = Array.isArray(data) ? data : (Array.isArray(data.reviews) ? data.reviews : []);
+    if (finished) return;
+    finished = true;
+
+    const rows = Array.isArray(data)
+      ? data
+      : (data && Array.isArray(data.reviews) ? data.reviews : []);
+
+    // Only replace the current list after a successful API response.
+    approvedReviews = rows;
+    currentReviewGroupStart = null;
     renderApprovedReviews(currentLanguage);
     cleanup();
   };
 
   function cleanup() {
+    clearTimeout(timeoutId);
     try { delete window[callbackName]; } catch (e) {}
-    script.remove();
+    if (script.parentNode) script.parentNode.removeChild(script);
   }
 
-  script.onerror = cleanup;
-  script.src = REVIEW_API_URL + "?action=approved&callback=" + encodeURIComponent(callbackName);
+  function retry() {
+    cleanup();
+    if (!approvedReviews.length && attempt < 2) {
+      setTimeout(() => loadApprovedReviews(attempt + 1), 1500);
+    }
+  }
+
+  script.onerror = retry;
+  const separator = REVIEW_API_URL.includes("?") ? "&" : "?";
+  script.src = REVIEW_API_URL + separator +
+    "action=approved&callback=" + encodeURIComponent(callbackName) +
+    "&t=" + Date.now();
+
+  const timeoutId = setTimeout(retry, 10000);
   document.body.appendChild(script);
 }
 
