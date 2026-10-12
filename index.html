@@ -608,7 +608,40 @@
         height: 145px;
       }
     }
-  </style>
+  
+    .quran-audio {
+      background: linear-gradient(135deg, #123b2a, #1d5940);
+      color: #fff;
+      padding: 34px 6%;
+    }
+    .quran-audio-inner {
+      max-width: 1000px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      text-align: right;
+    }
+    .quran-audio-icon {
+      flex: 0 0 76px;
+      height: 76px;
+      border: 1px solid rgba(214,179,106,.65);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+    }
+    .quran-audio-copy { max-width: 760px; }
+    .quran-audio h2 { color: #e0c477; font-size: clamp(22px, 3vw, 30px); margin-bottom: 7px; }
+    .quran-audio p { color: #edf2ee; margin-bottom: 16px; }
+    .quran-audio-button { margin-bottom: 8px; }
+    .quran-audio small { display: block; color: #d5e0d8; font-size: 12px; }
+    @media (max-width: 600px) {
+      .quran-audio-inner { flex-direction: column; text-align: center; }
+    }
+</style>
 </head>
 
 <body>
@@ -1114,6 +1147,23 @@
 </section>
 
 </main>
+
+
+
+<section class="quran-audio" id="quranAudio" aria-label="تلاوات المسجد النبوي">
+  <div class="quran-audio-inner">
+    <div class="quran-audio-icon" aria-hidden="true">🕌</div>
+    <div class="quran-audio-copy">
+      <h2 data-ar="استمع إلى تلاوات المسجد النبوي" data-en="Listen to Recitations from Al-Masjid an-Nabawi">استمع إلى تلاوات المسجد النبوي</h2>
+      <p data-ar="نحاول تشغيل التلاوة عند فتح الموقع إذا سمح المتصفح. إذا منع التشغيل التلقائي، اضغط زر التشغيل أدناه. البث من قناة السنة النبوية المتخصصة في المسجد النبوي." data-en="The recitation will attempt to start when the site opens if your browser allows it. If autoplay is blocked, press play below. The stream is from the Sunnah channel associated with the Prophet’s Mosque.">نحاول تشغيل التلاوة عند فتح الموقع إذا سمح المتصفح. إذا منع التشغيل التلقائي، اضغط زر التشغيل أدناه. البث من قناة السنة النبوية المتخصصة في المسجد النبوي.</p>
+      <div class="quran-player-wrap" style="max-width:760px;margin:12px auto 8px;background:rgba(255,255,255,.08);border:1px solid rgba(214,179,106,.45);border-radius:14px;padding:10px;">
+        <iframe id="quranRadioFrame" title="بث القرآن والسنة النبوية" src="https://quran.tv/radio/" style="display:block;width:100%;height:240px;border:0;border-radius:10px;background:#fff;" allow="autoplay; encrypted-media; picture-in-picture" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <a class="btn primary quran-audio-button" href="https://services.prh.gov.sa/ar/tilawa.php" target="_blank" rel="noopener noreferrer" data-ar="فتح تلاوات المسجد النبوي" data-en="Open Prophet’s Mosque Recitations">فتح تلاوات المسجد النبوي</a>
+      <small data-ar="قد يمنع iPhone وبعض المتصفحات التشغيل التلقائي؛ عندها شغّل البث من المشغّل أعلاه." data-en="iPhone and some browsers may block autoplay; if so, start playback in the player above.">قد يمنع iPhone وبعض المتصفحات التشغيل التلقائي؛ عندها شغّل البث من المشغّل أعلاه.</small>
+    </div>
+  </div>
+</section>
 
 
 <footer>
